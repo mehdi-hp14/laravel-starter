@@ -16,7 +16,7 @@ class PermissionsController extends AdminBaseController {
         $request->validate( [ 'name' => 'required' ] );
 
         $permission              = new Permission();
-        $permission->slug        = mySlugify( $request->name );
+        $permission->slug        = slugify( $request->name );
         $permission->name        = $request->name;
         $permission->description = $request->description;
         $permission->save();

@@ -134,8 +134,8 @@ function renderCommentItems($commentable)
     $modelName = strtolower((new \ReflectionClass($commentable))->getShortName());
 //    $comments = cacheIt('comments.' . $modelName . '.' . $commentable->id, function () use ($commentable) {
     $comments = $commentable->comments()->enabled()->approved()->direct()->with(['children' => function ($q) {
-        $q->enabled()->approved()->with('user')->withCount('userLike')->orderBy('id', 'ASC');
-    }])->with('user')->withCount('userLike')->orderBy('id', 'DESC')->paginate(\Request::input('comment-limit', 50), ['*'], 'comment-page')/*->withPath(url()->current())*/
+        $q->enabled()->approved()->with('customer')->withCount('userLike')->orderBy('id', 'ASC');
+    }])->with('customer')->withCount('userLike')->orderBy('id', 'DESC')->paginate(\Request::input('comment-limit', 50), ['*'], 'comment-page')/*->withPath(url()->current())*/
     ;
 //    });
 
@@ -354,7 +354,7 @@ function getReviews($item, $category = null, $period = null, $fromApp = false, $
     $rawReviews = getReviewsQuery($item, $category, $period)
         ->with([
             'parameters',
-            'user' => function ($q) {
+            'customer' => function ($q) {
                 $q->withCount(['reviews']);
             },
         ])
@@ -504,8 +504,8 @@ function renderAlbumCategories($item)
     $imageCategories = $imageCategoriesClass::transFlip('site.albums.media.category_');
 
 
-    /*$images = $item->media()->select(['*', DB::raw('(JSON_EXTRACT(data, \'$.category_id\')) as milad')])->wherePivot('album', 'user')->groupBy('milad')->get()->mapWithKeys(function ($media, $key) {*/
-    $images = $item->media()->valid()->select(['*', DB::raw('JSON_UNQUOTE(JSON_EXTRACT(data, \'$.category_id\')) as milad')])->wherePivotIn('album', ['user', 'reviews'])->groupBy('milad')->get()->mapWithKeys(function ($media, $key) {
+    /*$images = $item->media()->select(['*', DB::raw('(JSON_EXTRACT(data, \'$.category_id\')) as milad')])->wherePivot('album', 'customer')->groupBy('milad')->get()->mapWithKeys(function ($media, $key) {*/
+    $images = $item->media()->valid()->select(['*', DB::raw('JSON_UNQUOTE(JSON_EXTRACT(data, \'$.category_id\')) as milad')])->wherePivotIn('album', ['customer', 'reviews'])->groupBy('milad')->get()->mapWithKeys(function ($media, $key) {
         $data = json_decode($media->pivot->data);
         return [$data->category_id => $media->url];
     })->toArray();
@@ -521,7 +521,7 @@ function renderAlbumImages($item)
 
     $images = $item->media()->valid()
         ->select(['*', DB::raw('JSON_UNQUOTE(JSON_EXTRACT(data, \'$.category_id\')) as image_category_id')])
-        ->wherePivotIn('album', ['user', 'reviews'])
+        ->wherePivotIn('album', ['customer', 'reviews'])
         ->take(5)
         ->get();
 
@@ -1090,7 +1090,7 @@ function mobile_render_album_details($item, $categoryFilter = null)
         $categoryCounts = $item->media()->valid()
             ->select([DB::raw('JSON_UNQUOTE(JSON_EXTRACT(data, \'$.category_id\')) as category_id')])
             ->addSelect(\DB::raw('COUNT(distinct media.id) as media_count'))
-            ->wherePivotIn('album', ['user', 'reviews'])
+            ->wherePivotIn('album', ['customer', 'reviews'])
             ->groupBy('category_id')
             ->get()
             ->map(function ($result) use ($imageCategoriesClass) {
@@ -1115,8 +1115,8 @@ function mobile_render_album_details($item, $categoryFilter = null)
         $query->wherePivot('data', 'like', "%{$pattern}%");
     }
 
-    $images = $query->wherePivotIn('album', ['user', 'reviews'])
-        //->with('user')
+    $images = $query->wherePivotIn('album', ['customer', 'reviews'])
+        //->with('customer')
         ->orderBy('media.id', 'desc')
         ->paginate(15);
 

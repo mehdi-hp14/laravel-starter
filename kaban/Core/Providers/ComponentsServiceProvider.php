@@ -14,10 +14,10 @@ class ComponentsServiceProvider extends ServiceProvider {
         $request  = app( \Illuminate\Http\Request::class );
         $segments = $request->segments();
 
-
         if ( count( $segments ) ) {
-            if ( ! in_array( ucfirst( $segments[0] ), [ 'Admin'/*, 'Agency'*/ ] ) ) {
+            if ( ! in_array( ucfirst( $segments[0] ), [ 'Admin', 'Customer' ] ) ) {
                 unset( $componentSections['Admin'] );
+//                unset( $componentSections['Customer'] );
 //                unset($componentSections['Agency']);
             }
         }

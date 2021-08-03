@@ -1,5 +1,5 @@
 <?php
-$segments = [ 'admin', 'site' ];
+$segments = [ 'admin', 'site','customer' ];
 foreach ( $segments as $segment ) {
     foreach ( scandir( __DIR__ . '/' . $segment ) as $file ) {
         if ( $file != '.' && $file != '..' ) {

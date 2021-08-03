@@ -53,12 +53,12 @@ class Media extends Model {
 
 
     /**
-     * Media related user
+     * Media related customer
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user() {
-        return $this->belongsTo( User::class, 'user_id', 'id', 'user' );
+        return $this->belongsTo( User::class, 'user_id', 'id', 'customer' );
     }
 
     /**

@@ -19,7 +19,7 @@ class GetRoleEditItemResource extends JsonResource {
             'name'            => $this->name,
             'permissions'     => $this->permissions->pluck( 'id' ),
             'permissionItems' => $this->permissions->map( function ( $permission ) {
-                return [ [ 'value' => $permission->id, 'text' => $permission->name ] ];
+                return  [ 'value' => $permission->id, 'text' => $permission->name ] ;
             } ),
         ];
     }

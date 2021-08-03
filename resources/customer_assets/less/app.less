@@ -1,0 +1,46 @@
+@import "~@mdi/font/css/materialdesignicons.min.css";
+@import "fonts";
+@import "~vuetify/dist/vuetify.min.css";
+@import "./media.create";
+
+#my-editor {
+    .ck.ck-content {
+        border: 1px solid #c4c4c4;
+        height: 400px;
+        --ck-border-radius: 0;
+    }
+
+    .ck.ck-toolbar {
+        border-bottom: none;
+    }
+}
+
+.grow5 {
+    flex-grow: 5 !important;
+}
+
+//vuetify rtl fixture
+div[role=combobox] label.v-label {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.v-chip__close.v-icon.v-icon--right {
+    margin-right: 8px !important;
+    margin-left: -4px !important;
+}
+
+.v-messages .v-messages__wrapper {
+    direction: rtl;
+    text-align: right;
+}
+
+.v-data-table .v-data-footer {
+    direction: ltr !important;
+
+    .v-data-footer__pagination, .v-data-footer__select {
+        direction: rtl;
+    }
+
+}
+

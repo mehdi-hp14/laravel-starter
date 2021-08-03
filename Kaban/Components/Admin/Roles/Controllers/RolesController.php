@@ -25,7 +25,7 @@ class RolesController extends AdminBaseController {
         $form = json_decode( $request->form );
 
         $role       = new Role();
-        $role->slug = mySlugify( $request->name );
+        $role->slug = slugify( $request->name );
         $role->name = $request->name;
         $role->save();
 
@@ -63,7 +63,7 @@ class RolesController extends AdminBaseController {
         $role = Role::findOrFail( $id );
         $role->update( [
             'name' => $request->name,
-            'slug' => mySlugify( $request->name ),
+            'slug' => slugify( $request->name ),
         ] );
 //        print_r( $request->permissions );
 //        dd( 2 );
